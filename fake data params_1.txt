@@ -1,0 +1,37 @@
+
+debug_flag : 0 
+user_select : 0
+interp_phasemap : 1
+
+filter_pre_process_slice : 0 
+filter_averaged_slice : 0 
+filter_resid : 1 
+x_c : 5 
+
+flip_flag : 0 
+
+save_data : 0 
+save_excel : 0 
+save_params : 0 
+save_figs : 0 
+
+plot_flag : 0 
+res_axis : small 
+text_size : 9.0 5.0 
+paper_size : 3.0 2.0 
+
+ef_loop_start : 200 
+ef_slope_tol : 0.0900 
+slice_index : 200 
+map_crop : 100 
+
+fov : 420 
+pix : 1024 
+
+int_spacing : 0.10 
+
+h : 7.
+dz : 0.0005 
+z0 : -0.2500 
+
+cut_dist : 503 

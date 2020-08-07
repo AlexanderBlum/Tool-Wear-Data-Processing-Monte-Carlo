@@ -1,0 +1,37 @@
+function [x, z] = add_tool_wear(x, z, fr, tr, S)
+
+% Oct 2 2019
+% Alex Blum
+%
+% Simulates the addition of tool marks to a surface
+% 
+%   x   : array of x position [   um   ]
+%   z   : array of z position [   um   ]
+%   fr  : tool feed rate      [ mm/min ]
+%   tr  : tool radius         [   um   ]
+%   S   : spindle speed       [  rpm   ]
+
+% cusp width is feed per rev
+% the 1000 converts to micrometers
+w = 1000*fr/S;   % cusp width [ um/rev ]
+
+% cusp depth comes from the sag equation
+h = (w^2)/8/tr;
+
+% anonymous function for circle formula
+% k = y offset
+% h = x offset
+y = @(r, x, h, k) -sqrt(r.^2 - (x - h).^2) + k;
+
+% create plunge
+h_circ = 0; % circle has no shift in the x direction
+k_circ = r; % shift the circle center up to y = tool radius
+% this makes the bottom of circle always equal to y = 0
+z_1d = real(y(r, x, h_circ, k_circ));
+% create flat spots on either side of plunge
+% this step also sets the DOC
+z_1d( z_1d >= (h) ) = h;
+% adjust y offset so that flats are at 0
+z_1d = z_1d - h;
+end
+
