@@ -1,25 +1,25 @@
-function tool_wear_data_processing_monte_carlo
+% function tool_wear_data_processing_monte_carlo
 
 close all
 
-n_plunges = 100;
+n_plunges = 10;
 
 %% these are FLAGS. they turn features on and off
 unworn_flag = 0;
-use_real_data = 1;
+use_real_data = 0;
 
-f.nose_wear  = 1;
-f.edge_wear  = 1;
+f.nose_wear  = 0;
+f.edge_wear  = 0;
 f.rotate_z   = 1;
 f.tilt_map   = 1;
-f.add_noise  = 1;
-f.tool_marks = 1;
+f.add_noise  = 0;
+f.tool_marks = 0;
 
-f_ref.nose_wear = 1;
-f_ref.edge_wear = 1;
-f_ref.rotate_z  = 0;
+f_ref.nose_wear = 0;
+f_ref.edge_wear = 0;
+f_ref.rotate_z  = 1;
 f_ref.tilt_map  = 1;
-f_ref.add_noise = 1;
+f_ref.add_noise = 0;
 f_ref.tool_marks = 0;
 
 %% these are PARAMETERS
@@ -50,8 +50,8 @@ if use_real_data == 0
     for ii = 1:n_plunges
     % first, create fake data, thenget in the correct units
     % main program converts back to micrometers
-        plunges{ii}     = create_fake_plunge_data(f    , p);
-        plunges{ii}     = plunges{ii}*10^-6;
+        plunges{ii}     = create_fake_plunge_data(f, p);
+        plunges{ii}     = plunges{ii};
     %     plunges{ii}     = flipud(plunges{ii});
     end
 
@@ -63,7 +63,7 @@ if use_real_data == 0
         plunges{1} = ref_plunge;
     end
 
-    plunges     = cell2struct(plunges    , 'phaseMap', 1)';
+    plunges     = cell2struct(plunges, 'phaseMap', 1)';
     
     for ii = 1:n_plunges
         plunges(ii).name     = 'fake data';
@@ -115,7 +115,7 @@ ylabel('Deviation (nm)')
 % calculate mean and standard deviation with respect to each position
 rx_mean    = nan(1, length(x{1}));
 rx_std_dev = nan(1, length(x{1}));
-for jj = 1:length(x{1})
+for jj = 1:length(processedData(1).ResidualData.X)
     for ii = 2:n_plunges
         zjj(ii) = r.res{ii}(jj);
     end
@@ -128,4 +128,4 @@ figure, plot(x{1}, rx_std_dev)
 xlabel('Position (\mum)')
 ylabel('Uncertainty (nm)')
 
-end
+% end
